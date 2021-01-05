@@ -1,2 +1,75 @@
 # Ci-cd-virtualbox-test
 test ci/cd in virtual box
+
+# Lab CI/CD
+
+install and test ci/cd in gitlab
+
+## Installation
+-Install 4 linux debian server
+
+-Make host onliy virtual network (Vboxnet0)
+
+-for all vm make 2 interface internet/Vboxnet0
+
+-change hostname in 4 vm 
+```
+hostnamectl set-hostname NAME
+```
+- Lab1-local-repo 
+- Lab1-gitlab
+- Lab1-staging
+- Lab1-production
+
+install Docker in all vm
+```
+- download install-docker.sh
+- chmod +x install-docker.sh 
+- chmod 777 install-docker.sh 
+```
+install tor&privoxy in all vm
+```
+apt-get  install tor
+ - change /etc/tor/torrc
+  -SocksPort 9898
+/etc/init.d/tor start 
+
+apt-get  install privoxy
+
+Change /etc/privoxy/config
+
+        listen-address  127.0.0.1:9999
+
+        forward-socks4   /               127.0.0.1:9898 .
+
+        forward-socks5t   /               127.0.0.1:9898 .
+```
+
+add .bashrc 
+
+```
+alias whereiam='echo $(curl -s http://ip-api.com/json | jq -r ".country,.city")'
+alias x="export http_proxy='127.0.0.1:9999'"
+alias dx="export http_proxy=''"
+```
+press x in command line for send traffic to privoxy 
+
+```
+send in privoxy
+root@local-repo:~# x
+root@local-repo:~# whereiam 
+Netherlands Amsterdam
+```
+send in default network
+```
+root@local-repo:~# dx
+root@local-repo:~# whereiam 
+Iran Tehran
+
+```
+
+```bash
+pip install foobar
+```
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
