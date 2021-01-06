@@ -67,17 +67,17 @@ root@local-repo:~# whereiam
 Iran Tehran
 
 ```
-- #docker local repo 
+## docker local repo 
 ```
 docker run -d -p 5000:5000 --restart=always --name registry registry:2
 ```
-- #list images 
+- list images 
 ```docker images ```
-- #docker add tag sample 
+- docker add tag sample 
 ```docker tag ubuntu localhost:5000/my-ubuntu```
-- #doker restart contaner
-```docker container stop registry
-docker container start  registry```
+- doker restart contaner
+```docker container stop registry && docker container start  registry```
+
 - #push change image to local repository
 ```docker push localhost:5000/my-ubuntu```
 - #remove image from repository
@@ -85,22 +85,32 @@ docker container start  registry```
 - #test pull 
 ```docker pull localhost:5000/my-ubuntu ```
 - #change damon.json
-```root@gitlab:/etc/systemd# cat /etc/docker/damon.json 
-{ "insecure-registries":["192.168.56.20:5000"] }```
-- #Restart daemon& docker 
-```systemctl daemon-reload
-systemctl restart docker
-```
-#git lab server send push request 
-
 root@gitlab:/etc/systemd# cat /etc/docker/damon.json 
-{ "insecure-registries":["192.168.56.20:5000"] }
+{ "insecure-registries":["192.168.56.20:5000"] }```
 
-docker tag camunda/camunda-bpm-platform 192.168.56.20:5000/test-camunda
-docker push 192.168.56.20:5000/test-camunda:latest
 
+ - #Restart daemon& docker 
+```
 systemctl daemon-reload
 systemctl restart docker
+```
+ 
+## git lab server send push request 
+```
+root@gitlab:/etc/systemd# cat /etc/docker/damon.json 
+{ "insecure-registries":["192.168.56.20:5000"] }
+```
+ - #git lab server send push request 
+
+```
+docker tag camunda/camunda-bpm-platform 192.168.56.20:5000/test-camunda
+docker push 192.168.56.20:5000/test-camunda:latest
+```
+ - restart service 
+```
+systemctl daemon-reload
+systemctl restart docker
+```
 
 ```bash
 pip install foobar
